@@ -1,0 +1,8 @@
+
+.PhotoGrid .Row {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+    line-height: 0;
+}
