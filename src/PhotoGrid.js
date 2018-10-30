@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import LayoutCalculator from "./LayoutCalculator";
+import LayoutCalculator from "./layout/LayoutCalculator";
 import PropTypes from 'prop-types';
 import { withSize } from 'react-sizeme';
 import './Photogrid.css';
+
 class PhotoGrid extends Component {
 
     render() {
@@ -14,7 +15,7 @@ class PhotoGrid extends Component {
                 {rows.map((row, rowIdx) => {
                     return (
                         <div key={rowIdx} className="Row">
-                            {row.photos.map((photo, photoIdx) => {
+                            {row.photos.map((photo) => {
                                 const scalingRatio = viewportWidth / row.unscaledWidth;
                                 const width = Math.round(photo.width * scalingRatio);
                                 const height = Math.round(photo.height * scalingRatio);
