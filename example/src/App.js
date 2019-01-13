@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PhotoGrid from './PhotoGrid';
+import PhotoGrid from 'react-photos-grid';
 
 class App extends Component {
     render() {
