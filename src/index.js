@@ -2,21 +2,22 @@ import React, { Component } from 'react'
 import LayoutCalculator from './layout/LayoutCalculator'
 import PropTypes from 'prop-types'
 import withSize from 'react-sizeme'
-import './Photogrid.css'
+import styles from './Photogrid.css'
+import componentPropType from './utils'
 
 class PhotoGrid extends Component {
 
   render() {
-    const { photos, optimalHeight, size, margin } = this.props
+    const { photos, optimalHeight, size, component: Component } = this.props
     const viewportWidth = size.width
     const rows = new LayoutCalculator(photos, optimalHeight, viewportWidth).calculate()
     return (
-      <div className='PhotoGrid'>
+      <div className={styles.PhotoGrid}>
         {rows.map((row, rowIdx) => {
           const scalingRatio = viewportWidth / row.unscaledWidth
           let remainingWidth = viewportWidth
           return (
-            <div key={rowIdx} className='Row'>
+            <div key={rowIdx} className={styles.PhotoGridRow}>
               {row.photos.map((photo, idx) => {
                 let calculatedWidth = Math.round(photo.width * scalingRatio)
                 let width
@@ -28,12 +29,12 @@ class PhotoGrid extends Component {
                 const height = Math.round(photo.height * scalingRatio)
                 remainingWidth -= width
                 return (
-                  <img key={photo.src}
-                    alt={photo.src}
+                  <Component
+                    key={photos.src}
                     src={photo.src}
-                    width={width - 2 * margin}
-                    height={height - 2 * margin}
-                    style={{ margin: margin }} />
+                    width={width}
+                    height={height}
+                  />
                 )
               }
               )}
@@ -47,7 +48,7 @@ class PhotoGrid extends Component {
 }
 
 PhotoGrid.defaultProps = {
-  margin: 2
+  component: 'img'
 }
 
 PhotoGrid.propTypes = {
@@ -57,7 +58,7 @@ PhotoGrid.propTypes = {
     height: PropTypes.number.isRequired
   })),
   optimalHeight: PropTypes.number.isRequired,
-  margin: PropTypes.number
+  component: componentPropType
 }
 
 export default withSize()(PhotoGrid)

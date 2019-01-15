@@ -59,6 +59,7 @@
     "dist"
   ],
   "dependencies": {
+    "react-is": "^16.7.0",
     "react-sizeme": "^2.5.2"
   }
 }
