@@ -80,6 +80,7 @@ class LayoutCalculator {
 
     return rows
   }
+
 }
 
 export default LayoutCalculator

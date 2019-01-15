@@ -1,5 +1,5 @@
 import LayoutCalculator from './LayoutCalculator'
-import { otherPhotos, somePhotos } from './LayoutCalculatorFixture'
+import {otherPhotos, somePhotos} from './LayoutCalculatorFixture'
 
 it('should split photos in rows', () => {
   // given
