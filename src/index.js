@@ -34,6 +34,7 @@ class PhotoGrid extends Component {
                     src={photo.src}
                     width={width}
                     height={height}
+                    {...photo}
                   />
                 )
               }
