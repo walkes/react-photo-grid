@@ -31,10 +31,10 @@ class PhotoGrid extends Component {
                 return (
                   <Component
                     key={photos.src}
+                    {...photo}
                     src={photo.src}
                     width={width}
                     height={height}
-                    {...photo}
                   />
                 )
               }

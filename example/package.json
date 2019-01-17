@@ -1,7 +1,7 @@
 {
   "name": "react-photos-grid-example",
   "homepage": "https://walkes.github.io/react-photos-grid",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "MIT",
   "private": true,
   "dependencies": {
