@@ -2,6 +2,19 @@ import React, { Component } from 'react';
 import PhotoGrid from 'react-photos-grid';
 
 class App extends Component {
+
+  component(props) {
+    const margin = 2
+    return (<img
+      alt={props.src}
+      key={props.src}
+      src={props.src}
+      width={props.width - 2 * margin}
+      height={props.height - 2 * margin}
+      style={{ margin: margin }}
+    />);
+  }
+
   render() {
     const photos = [
       {
@@ -276,20 +289,11 @@ class App extends Component {
       },
     ];
 
-    const margin = 2;
+    photos.forEach(photo => Object.assign(photo, {key: photo.src}));
 
     return (
       <div className="App">
-        <PhotoGrid photos={photos} optimalHeight={400} component={
-          (photo) => <img
-            alt={photo.src}
-            key={photo.src}
-            src={photo.src}
-            width={photo.width - 2 * margin}
-            height={photo.height - 2 * margin}
-            style={{ margin: margin }}
-          />
-        } />
+        <PhotoGrid photos={photos} optimalHeight={400} component={this.component}/>
       </div>
     );
   }

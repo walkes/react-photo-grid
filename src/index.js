@@ -3,7 +3,6 @@ import LayoutCalculator from './layout/LayoutCalculator'
 import PropTypes from 'prop-types'
 import withSize from 'react-sizeme'
 import styles from './Photogrid.css'
-import componentPropType from './utils'
 
 class PhotoGrid extends Component {
 
@@ -59,7 +58,7 @@ PhotoGrid.propTypes = {
     height: PropTypes.number.isRequired
   })),
   optimalHeight: PropTypes.number.isRequired,
-  component: componentPropType
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func])
 }
 
 export default withSize()(PhotoGrid)
