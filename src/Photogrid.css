@@ -1,3 +1,6 @@
+.PhotoGrid {
+  -webkit-overflow-scrolling: touch;
+}
 
 .PhotoGrid .PhotoGridRow {
   display: inline-block;
