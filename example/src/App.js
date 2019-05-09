@@ -3,7 +3,7 @@ import PhotoGrid from 'react-photos-grid';
 
 class App extends Component {
 
-  component(props) {
+  component = (props) => {
     const margin = 2
     return (<img
       alt={props.src}
@@ -293,7 +293,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <PhotoGrid photos={photos} optimalHeight={400} component={this.component}/>
+        <PhotoGrid photos={photos} optimalHeight={400} ImageComponent={this.component}/>
       </div>
     );
   }

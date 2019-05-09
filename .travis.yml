@@ -1,23 +1,4 @@
 language: node_js
 node_js:
-- 9
-cache: npm
-before_deploy:
-- npm install -g rollup
-- npm run-script predeploy
-deploy:
-  - provider: npm
-    skip_cleanup: true
-    email: walkes2+npm@gmail.com
-    api_key:
-      secure: ls8w869WdA9PffrWu65ukRnocWl66BMyDN9GbYWPXrWLi1qzhn4YLoO2zho+d3KO8MfZ4NlHiZO3m4z3IE+Adv6TxWluL5EAmbztQRcUhhTGEbcbZG2mqjMl146L3akKk+FLDmwgOn/uMUbweSrd1Ow44hW+00FLhON/bDJqjLksZqy+RfxA8SiFUXtu/+yVSWh+mQi/i1LtNtGZvRb41CPvt1AQysH433tPdD813y4xvs5BhKs4cwRznr4/6E5PyUrKN0djwM9wP8wWf9BPVLA6ckLVwjWDTNkSwyVH2vF6xiutcjMoF5vX4e3v3TaL6BUBIvKUQMBOwQ3XdrIm6oHY9LsEdkvlnJO5/SdTFBKbYX0cbLda+guyOs2Mz0IexXB9wDSiz3d9JXm8ZpDj2p4CmHQpOKpUUsRkUYsOfqlTZL0ik780JclX+AlcyWSAzmciDlngM/5L9OcbeFNjf2+c9PFt31RAyxhb7a9e2k9ve/YoZKO/whl8ct0fqr6rl1FNSyTsUpqSE6EVOa4mGSBSsyt1VZ0gepsTEcfB0NK8XXYzFaC6A5Qzr5UOYgZ3kZrptvezL7GR070XTsvTELrXbiIosm/wdA0si/fAaeL1AJTAnlaL4Dq1sSg8UFyYzCMGW70ZzUiPJYdR2lYul8niO5M5jeILare2n7WPnBo=
-    on:
-      tags: true
-  - provider: pages
-    local-dir: example/build
-    skip-cleanup: true
-    github-token:
-      secure: P4E36CyRBqaR7ESbV5bkXyDWqYCiK8JJFl+jB14kOHGWkcUXrrxQAFoz0ZOSrXxg9qN9ri6k0QipzIoFeQcNvryGnxCwjh8AMVpOqGgZB5iUyVCd2+3oWByEDsOpWFYQohKglOrYgLt7rLxd+KV62gvuxYpdE9f40RA+ImsKG4LGZyq59BG5EG/GfJy3EPobU9Cknjx21tZPdu/hV0uLZQG1j36tJ7SNXWwV1ssMnaMbJdEUfssOwVpl7vO8KVCcR3pZsgxz6yeobMc9OQaWhEH/om9IiLQYw1aPBzGEDV56mkcb5ltGLXxl4e8IycfaoY0Ysj0/Awn7tIGJjNEKnkR6vsimCiXKD4P9SDzUYgsCeHZiP+dbiLSsZzqSgd4qqMPHKFdNUy5AmrWOVTWhJ1P+C44TuRXoHD3ve+Z7UQ23zdIYxdnI7ELjpkPkbf/j4XjWxb/Vsg+gdT/gp/k4IsqRd4vcMoJGIIFiuyyKZ0nNqvbYb25gEglhgdUgO/rCwLb2eaaoZ/lLC/L/V0bM2/APeqRsR5lcjNWSQyDfaV1iovvrfa3v7wwqUZRKJTJDVdPIjnfYoBX/jIVPk4PDOz+Qt9WRmrr05DAXoBnSjblsAM7pRYuV3R3Pqlqdee+FdJ42t7iHN5kvzIn+3jXhbDB1DyBxrsA0nwX+6uywW2M=
-    keep-history: true
-    on:
-      branch: master
+  - 9
+  - 8
