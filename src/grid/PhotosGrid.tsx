@@ -16,27 +16,17 @@ export class PhotosGrid extends React.Component<IPhotoGridProps> {
       return (
         <div className="PhotoGrid">
           {rows.map((row, rowIdx) => {
-            const scalingRatio = viewportWidth / row.unscaledWidth;
-            let remainingWidth = viewportWidth;
             return (
               <div key={rowIdx} className="PhotoGridRow">
-                {row.photos.map((photo, idx) => {
-                  const calculatedWidth = Math.round(photo.width * scalingRatio);
-                  let width;
-                  if (idx === row.photos.length - 1) {
-                    width = remainingWidth;
-                  } else {
-                    width = calculatedWidth;
-                  }
-                  const height = Math.round(photo.height * scalingRatio);
-                  remainingWidth -= width;
+                {row.photos.map((photo) => {
                   return (
                     <ImageComponent
                       key={photo.src}
                       {...photo}
                       src={photo.src}
-                      width={width}
-                      height={height}/>
+                      scaledHeight={photo.scaledHeight}
+                      width={photo.scaledWidth}
+                      height={photo.scaledHeight}/>
                   );
                 })}
               </div>

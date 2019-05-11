@@ -108,28 +108,47 @@ class LayoutCalculator {
   };
 
   private scaleRows = () => {
-    this.rows = this.unscaledRows.map((row) => {
-      const scalingRatio = this.viewportWidth / row.width;
-      let remainingWidth = this.viewportWidth;
+    // don't up-scale to viewport if there is only 1 row, smaller than viewport's width
+    if (this.unscaledRows.length === 1 && this.unscaledRows[0].width < this.viewportWidth) {
 
-      const photos = row.photos.map((photo, idx) => {
-        const calculatedWidth = Math.round(photo.width * scalingRatio);
-        let width;
-        if (idx === row.photos.length - 1) {
-          width = remainingWidth;
-        } else {
-          width = calculatedWidth;
-        }
-        const height = Math.round(photo.height * scalingRatio);
-        remainingWidth -= width;
-        return Object.assign({
-          scaledHeight: height,
-          scaledWidth: width,
-        }, photo);
+      this.rows = this.unscaledRows.map((row) => {
+        const photos = row.photos.map((photo) => {
+          const height = Math.min(photo.height, this.optimalHeight);
+          const width = photo.width * (photo.height / height);
+          return Object.assign({
+              scaledHeight: height,
+              scaledWidth: width,
+            },
+            photo);
+        });
+        return {photos};
       });
 
-      return {photos};
-    });
+    } else {
+
+      this.rows = this.unscaledRows.map((row) => {
+        const scalingRatio = this.viewportWidth / row.width;
+        let remainingWidth = this.viewportWidth;
+
+        const photos = row.photos.map((photo, idx) => {
+          const calculatedWidth = Math.round(photo.width * scalingRatio);
+          let width;
+          if (idx === row.photos.length - 1) {
+            width = remainingWidth;
+          } else {
+            width = calculatedWidth;
+          }
+          const height = Math.round(photo.height * scalingRatio);
+          remainingWidth -= width;
+          return Object.assign({
+            scaledHeight: height,
+            scaledWidth: width,
+          }, photo);
+        });
+
+        return {photos};
+      });
+    }
   };
 
 }

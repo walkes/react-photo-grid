@@ -71,3 +71,37 @@ it("shoud put pictures with smallest possible distortion", () => {
   ]);
 
 });
+
+it("don't exceed optimal height for one photo", () => {
+  // given
+  const optimalHeight = 180;
+  const layoutCalculator = new LayoutCalculator(somePhotos.slice(0, 1), optimalHeight, 900);
+
+  // expect
+  const actual = layoutCalculator.calculate();
+  // and all pictures in one row
+  expect(actual.map((row) => row.photos.map((photo) => photo.src))).toEqual([
+    ["1.jpg"],
+  ]);
+  // and all pictures has optimal height
+  expect(actual.map((row) => row.photos.map((photo) => photo.scaledHeight))).toEqual(
+    [[optimalHeight]],
+  );
+});
+
+it("keep photos in one row if there are too few of them", () => {
+  // given
+  const optimalHeight = 180;
+  const layoutCalculator = new LayoutCalculator(somePhotos.slice(0, 3), optimalHeight, 900);
+
+  // expect
+  const actual = layoutCalculator.calculate();
+  // and all pictures in one row
+  expect(actual.map((row) => row.photos.map((photo) => photo.src))).toEqual([
+    ["1.jpg", "2.jpg", "3.jpg"],
+  ]);
+  // and all pictures has optimal height
+  expect(actual.map((row) => row.photos.map((photo) => photo.scaledHeight))).toEqual(
+    [Array(3).fill(optimalHeight)],
+  );
+});

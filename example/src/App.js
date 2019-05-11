@@ -293,7 +293,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <PhotoGrid photos={photos} optimalHeight={400} ImageComponent={this.component}/>
+        <PhotoGrid photos={photos} optimalHeight={500} ImageComponent={this.component}/>
       </div>
     );
   }
