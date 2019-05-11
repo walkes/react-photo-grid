@@ -18,13 +18,11 @@ export class PhotosGrid extends React.Component<IPhotoGridProps> {
           {rows.map((row, rowIdx) => {
             return (
               <div key={rowIdx} className="PhotoGridRow">
-                {row.photos.map((photo) => {
+                {row.photos.map((photo, idx) => {
                   return (
                     <ImageComponent
-                      key={photo.src}
-                      {...photo}
+                      key={idx}
                       src={photo.src}
-                      scaledHeight={photo.scaledHeight}
                       width={photo.scaledWidth}
                       height={photo.scaledHeight}/>
                   );
