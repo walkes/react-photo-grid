@@ -1,4 +1,4 @@
-import {IPhoto} from "../model/IPhoto";
+import {IPhoto, IRow} from "../model/IPhoto";
 
 class LayoutCalculator {
 
@@ -15,49 +15,38 @@ class LayoutCalculator {
   private readonly optimalHeight: number;
   private readonly viewportWidth: number;
 
+  private readonly visited: boolean[];
+  private readonly costs: number[];
+  private readonly shortestPaths: Array<number | undefined>;
+  private readonly indicesQueue: number[];
+  private readonly costsQueue: number[];
+
+  private readonly unscaledRows: IUnscaledRow[];
+  private rows: IRow[];
+
   constructor(photos: IPhoto[], optimalHeight: number, viewportWidth: number) {
     this.photos = LayoutCalculator.normalizePhotos(photos, optimalHeight);
     this.optimalHeight = optimalHeight;
     this.viewportWidth = viewportWidth;
+
+    this.visited = this.photos.map(() => false);
+    this.costs = this.photos.map(() => Infinity);
+    this.shortestPaths = this.photos.map(() => undefined);
+    this.indicesQueue = [];
+    this.costsQueue = [];
+    this.unscaledRows = [];
   }
 
   public calculate = () => {
-    const visited = this.photos.map(() => false);
-    const costs = this.photos.map(() => Infinity);
-    const shortestPaths = this.photos.map(() => undefined);
-    const indicesQueue: number[] = [];
-    const costsQueue: number[] = [];
-    this.generateSplitDAG(-1, 0, visited, costs, shortestPaths, indicesQueue, costsQueue);
+    this.generateSplitDAG(-1, 0);
+    this.buildRows();
+    this.scaleRows();
 
-    const rows = [];
-
-    let row = {photos: [] as IPhoto[], unscaledWidth: 0};
-    let currentRowIdx = shortestPaths[shortestPaths.length - 1];
-
-    for (let i = shortestPaths.length - 1; i >= 0; i--) {
-      if ((currentRowIdx === i || currentRowIdx === undefined) && row.photos.length > 0) {
-        rows.unshift(row);
-        row = {photos: [], unscaledWidth: 0};
-        currentRowIdx = shortestPaths[i];
-      }
-      row.photos.unshift(this.photos[i]);
-      row.unscaledWidth += this.photos[i].width;
-    }
-
-    if (row.photos.length > 0) {
-      rows.unshift(row);
-    }
-
-    return rows;
+    return this.rows;
   };
 
   private generateSplitDAG = (parentIdx: number,
-                              parentCost: number,
-                              visited: boolean[],
-                              costs: number[],
-                              shortestPath: Array<number | undefined>,
-                              indicesQueue: number[],
-                              costsQueue: number[]) => {
+                              parentCost: number) => {
     let currentWidth = 0;
     let currentIdx = parentIdx;
     while (++currentIdx < this.photos.length) {
@@ -79,28 +68,77 @@ class LayoutCalculator {
         break;
       }
 
-      if (costs[currentIdx] > currentCost) {
-        costs[currentIdx] = currentCost;
-        shortestPath[currentIdx] = parentIdx;
+      if (this.costs[currentIdx] > currentCost) {
+        this.costs[currentIdx] = currentCost;
+        this.shortestPaths[currentIdx] = parentIdx;
       }
 
-      if (!visited[currentIdx]) {
-        indicesQueue.push(currentIdx);
-        costsQueue.push(currentCost);
-        visited[currentIdx] = true;
+      if (!this.visited[currentIdx]) {
+        this.indicesQueue.push(currentIdx);
+        this.costsQueue.push(currentCost);
+        this.visited[currentIdx] = true;
       }
     }
 
     let nextIdx;
     let nextCost;
     // tslint:disable-next-line:no-conditional-assignment
-    while ((nextIdx = indicesQueue.shift()) !== undefined
-    // tslint:disable-next-line:no-conditional-assignment
-    && (nextCost = costsQueue.shift()) !== undefined) {
-      this.generateSplitDAG(nextIdx, nextCost, visited, costs, shortestPath, indicesQueue, costsQueue);
+    while ((nextIdx = this.indicesQueue.shift()) !== undefined && (nextCost = this.costsQueue.shift()) !== undefined) {
+      this.generateSplitDAG(nextIdx, nextCost);
     }
+  };
+
+  private buildRows = () => {
+    let row = {photos: [], width: 0} as IUnscaledRow;
+    let currentRowIdx = this.shortestPaths[this.shortestPaths.length - 1];
+
+    for (let i = this.shortestPaths.length - 1; i >= 0; i--) {
+      if ((currentRowIdx === i || currentRowIdx === undefined) && row.photos.length > 0) {
+        this.unscaledRows.unshift(row);
+        row = {photos: [], width: 0};
+        currentRowIdx = this.shortestPaths[i];
+      }
+      row.photos.unshift(this.photos[i]);
+      row.width += this.photos[i].width;
+    }
+
+    if (row.photos.length > 0) {
+      this.unscaledRows.unshift(row);
+    }
+  };
+
+  private scaleRows = () => {
+    this.rows = this.unscaledRows.map((row) => {
+      const scalingRatio = this.viewportWidth / row.width;
+      let remainingWidth = this.viewportWidth;
+
+      const photos = row.photos.map((photo, idx) => {
+        const calculatedWidth = Math.round(photo.width * scalingRatio);
+        let width;
+        if (idx === row.photos.length - 1) {
+          width = remainingWidth;
+        } else {
+          width = calculatedWidth;
+        }
+        const height = Math.round(photo.height * scalingRatio);
+        remainingWidth -= width;
+        return Object.assign({
+          scaledHeight: height,
+          scaledWidth: width,
+        }, photo);
+      });
+
+      return {photos};
+    });
   };
 
 }
 
 export default LayoutCalculator;
+
+interface IUnscaledRow {
+
+  photos: IPhoto[];
+  width: number;
+
+}
