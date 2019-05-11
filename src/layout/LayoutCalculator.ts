@@ -59,12 +59,12 @@ class LayoutCalculator {
       const currentCost = parentCost + Math.pow(currentHeight - this.optimalHeight, 2);
 
       // continue if row height is too big
-      if (this.optimalHeight * 2 < currentHeight) {
+      if (this.optimalHeight * 1.5 < currentHeight) {
         continue;
       }
 
       // break if row is too small
-      if (this.optimalHeight / 2 > currentHeight) {
+      if (this.optimalHeight / 1.5 > currentHeight) {
         break;
       }
 
